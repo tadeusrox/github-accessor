@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def authorize
-    redirect_to "http://github.com/login/oauth/authorize?#{authorize_query}"
+    octo_client = Octokit::Client.new
+    url = octo_client.authorize_url(github_configs['client_id'], :scope => github_configs['scope'], state:  github_configs['secret'])
+    redirect_to url
   end
 
   def create
@@ -10,16 +12,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def authorize_query
-    {
-      client_id: github_configs['client_id'],
-      redirect_uri: github_configs['redirect_uri'],
-      scope: github_configs['scope'],
-      state: github_configs['secret']
-    }.to_query
-  end
-
 
   def github_configs
     Rails.application.config_for('github')
