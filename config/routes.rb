@@ -6,9 +6,11 @@ Rails.application.routes.draw do
     end
   end
 
-
-  get '/login/oauth/authorize', host: 'https://github.com:80', as: :oauth_authorize
-
+  resources :users, only: [], path: '' do
+    collection do
+      get ':name', to: 'users#show', as: :user
+    end
+  end
 
   get 'welcome/index'
   root 'welcome#index'

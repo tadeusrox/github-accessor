@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     client = Octokit.exchange_code_for_token(params[:code], github_configs['client_id'], github_configs['secret'])
     session[:access_token] = client[:access_token]
-    redirect_to root_path
+    redirect_to user_users_path(current_user.user.login)
   end
 
   private
