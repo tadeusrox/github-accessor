@@ -2,6 +2,7 @@ default: &default
   client_id: <%= ENV['GITHUB_ACCESSOR_CLIENT_ID'] %>
   redirect_url: 'http://localhost:3000/sessions/create'
   scope: 'user'
+  secret: <%= ENV['GITHUB_SECRET'] %>
 
 development:
   <<: *default
@@ -11,3 +12,5 @@ test:
 
 production:
   <<: *default
+
+
