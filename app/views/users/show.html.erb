@@ -3,7 +3,7 @@ Hello <%= current_user.login %>
 <div class="row">
  <div class="large-12">
   <ul class="accordion">
-    <% current_user.repositories.each do |repo| %>
+    <% @user.list_repositories.each do |repo| %>
       <li>
         <%= repo.full_name %>
       </li>
