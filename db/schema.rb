@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160526153845) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "repositories", ["full_name"], name: "index_repositories_on_full_name"
   add_index "repositories", ["user_id"], name: "index_repositories_on_user_id"
 
   create_table "users", force: :cascade do |t|
