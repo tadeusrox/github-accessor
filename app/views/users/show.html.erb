@@ -1,11 +1,38 @@
+<%
+repositories = Rails.cache.fetch("repositories", expires_in: 1.year) do
+  current_user.repositories(nil, per_page: 100)
+end
+%>
+
 Hello <%= current_user.login %>
 
 <div class="row">
  <div class="large-12">
   <ul class="accordion">
-    <% @user.list_repositories.each do |repo| %>
+    <% repositories.each do |repo| %>
       <li>
         <%= repo.full_name %>
+        <ul>
+          <% prs = Rails.cache.fetch("#{repo.full_name}2", expires_in: 1.year) do
+          current_user.pull_requests(repo.full_name) rescue []
+          end %>
+          <% prs.each do |pr| %>
+          <li>
+            <%= pr.title %> / <%= pr.number %>
+            <ul>
+              <% files = Rails.cache.fetch("file#{repo.full_name}#{pr.number}") do
+                current_user.pull_request_files(repo.full_name, pr.number)
+                end %>
+
+                <% files.each do |file| %>
+                <li>
+                  <%= file.filename %>
+                </li>
+                <% end %>
+            </ul>
+          </li>
+          <% end %>
+        </ul>
       </li>
     <% end %>
   </ul>
