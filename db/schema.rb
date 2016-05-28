@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160526171126) do
+ActiveRecord::Schema.define(version: 20160528025058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(version: 20160526171126) do
   end
 
   add_index "issues", ["repository_id"], name: "index_issues_on_repository_id", using: :btree
+
+  create_table "pull_request_files", force: :cascade do |t|
+    t.string   "repository"
+    t.integer  "pull_id"
+    t.string   "file_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "pull_request_files", ["file_path"], name: "index_pull_request_files_on_file_path", using: :btree
+  add_index "pull_request_files", ["pull_id"], name: "index_pull_request_files_on_pull_id", using: :btree
+  add_index "pull_request_files", ["repository"], name: "index_pull_request_files_on_repository", using: :btree
 
   create_table "repositories", force: :cascade do |t|
     t.integer  "user_id"
