@@ -26,7 +26,7 @@ Hello <%= current_user.login %>
 
                 <% files.each do |file| %>
                 <li>
-                  <%= file.filename %>
+                  <%= file.filename %> <%= PullRequestFile.where(file_path: file.filename, repository: repo.full_name).map(&:pull_id) - [pr.number]%>
                 </li>
                 <% end %>
             </ul>
