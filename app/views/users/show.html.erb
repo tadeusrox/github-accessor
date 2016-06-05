@@ -1,11 +1,5 @@
-<%
-repositories = Rails.cache.fetch("repositories", expires_in: 1.year) do
-  current_user.repositories(nil, per_page: 100)
-end
-%>
-
 Hello <%= current_user.login %>
-oi
+
 <div class="row">
  <div class="large-12">
   <ul>
