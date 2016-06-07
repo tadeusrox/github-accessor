@@ -2,10 +2,17 @@ Hello <%= current_user.login %>
 
 <div class="row">
  <div class="large-12">
-  <ul class="accordion">
-    <% @user.list_repositories.each do |repo| %>
+  <ul>
+    <% @user.pull_requests.each do |pull| %>
       <li>
-        <%= repo.full_name %>
+        <%= pull.repo %> <%= pull.pull_id  %>
+        <ul>
+          <% pull.files.each do |file| %>
+            <li>
+            <%= file.file_path %>
+            </li>
+          <% end %>
+        </ul>
       </li>
     <% end %>
   </ul>

@@ -11,10 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160526153845) do
+ActiveRecord::Schema.define(version: 20160605033335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "pull_request_files", force: :cascade do |t|
+    t.string   "repository"
+    t.integer  "pull_id"
+    t.string   "file_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "pull_request_files", ["file_path"], name: "index_pull_request_files_on_file_path", using: :btree
+  add_index "pull_request_files", ["pull_id"], name: "index_pull_request_files_on_pull_id", using: :btree
+  add_index "pull_request_files", ["repository"], name: "index_pull_request_files_on_repository", using: :btree
+
+  create_table "pull_requests", force: :cascade do |t|
+    t.integer  "pull_id"
+    t.string   "repo"
+    t.boolean  "checked"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "pull_requests", ["pull_id"], name: "index_pull_requests_on_pull_id", using: :btree
+  add_index "pull_requests", ["user_id"], name: "index_pull_requests_on_user_id", using: :btree
 
   create_table "repositories", force: :cascade do |t|
     t.integer  "user_id"
@@ -34,5 +58,6 @@ ActiveRecord::Schema.define(version: 20160526153845) do
 
   add_index "users", ["github_login"], name: "index_users_on_github_login", using: :btree
 
+  add_foreign_key "pull_requests", "users"
   add_foreign_key "repositories", "users"
 end
