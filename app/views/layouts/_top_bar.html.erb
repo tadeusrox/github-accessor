@@ -8,7 +8,7 @@
   <div id="responsive-menu">
     <div class="top-bar-left">
       <ul class="dropdown menu" data-dropdown-menu>
-        <li><a href="#">Pull Requests</a></li>
+        <li><%= link_to "Pull Requests", pull_request_path(system_user.pull_requests.first) %></li>
       </ul>
     </div>
   </div>

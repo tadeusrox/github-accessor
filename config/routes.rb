@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pull_requests, only: [:show] do
+  end
+
   get 'welcome/index'
   root 'welcome#index'
 end
