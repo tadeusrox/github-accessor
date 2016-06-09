@@ -4,7 +4,21 @@
   </div>
   <div class="columns small-8">
     <div class="callout">
-    Pull
+      <div class="row">
+        <div class="columns">
+          <h5>
+            <%= @pull_request.github_pull.title %>
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="columns">
+          <div>
+            <%= link_to 'link', @pull_request.github_pull.html_url, target: '_blank' %>
+          </div>
+        </div>
+      </div>
+      <%= @pull_request.inspect %>
     </div>
   </div>
   <div class="columns small-2">
