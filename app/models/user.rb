@@ -27,7 +27,6 @@ class User < ActiveRecord::Base
           pulls.each do |pr|
             pull = pull_requests.find_or_create_by(pull_id: pr.number, repo: repo.full_name, checked: false, title: pr.title, url: pr.html_url)
             pull.populate_files
-            puts [pull.pull_id, pull.repo].inspect
           end
           length = pulls.length
         end
