@@ -25,8 +25,9 @@ class User < ActiveRecord::Base
         Rails.cache.fetch("#{cache_key}/repositories/pulls/#{repo.full_name}?page=#{n}", expires_in: 1.year) do
           pulls = github_user.pull_requests(repo.full_name, state: 'all', per_page: 100, page: n) rescue []
           pulls.each do |pr|
-            pull = pull_requests.find_or_create_by(pull_id: pr.number, repo: repo.full_name, checked: false)
+            pull = pull_requests.find_or_create_by(pull_id: pr.number, repo: repo.full_name, checked: false, title: pr.title, url: pr.html_url)
             pull.populate_files
+            puts [pull.pull_id, pull.repo].inspect
           end
           length = pulls.length
         end

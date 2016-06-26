@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user, :system_user
 
+ # before_action :populate_pull_requests
+
   def current_user
     @current_user ||= Github.new(session[:access_token]).user
   end
@@ -12,5 +14,11 @@ class ApplicationController < ActionController::Base
     @user ||= User.find_or_create_by(github_login: current_user.login)
     @user.github_user = current_user
     @user
+  end
+
+  private
+
+  def populate_pull_requests
+    system_user.populate_pull_requests
   end
 end

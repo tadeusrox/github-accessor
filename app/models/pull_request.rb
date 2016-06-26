@@ -20,10 +20,4 @@ class PullRequest < ActiveRecord::Base
   def files
     PullRequestFile.where(repository: repo, pull_id: pull_id)
   end
-
-  def github_pull
-    Rails.cache.fetch("#{cache_key}/pulls/#{repo}/#{pull_id}") do
-      user.github_user.pull_request(repo, pull_id)
-    end
-  end
 end
