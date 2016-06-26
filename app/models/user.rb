@@ -17,6 +17,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def best_pull_request
+    repos = pull_requests.where(checked: false).select(:repo).uniq.pluck(:repo)
+    pulls_repos = pull_requests.where(checked: false).where(repo: repos.shuffle.first).order(:pull_id).first
+  end
+
   def populate_pull_requests
     github_repositories.each do |repo|
       n = 0
