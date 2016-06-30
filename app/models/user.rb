@@ -17,6 +17,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def best_pull_request
+    repos = pull_requests.where(checked: false).select(:repo).uniq.pluck(:repo)
+    pulls_repos = pull_requests.where(checked: false).where(repo: repos.shuffle.first).order(:pull_id).first
+  end
+
   def populate_pull_requests
     github_repositories.each do |repo|
       n = 0
@@ -25,7 +30,10 @@ class User < ActiveRecord::Base
         Rails.cache.fetch("#{cache_key}/repositories/pulls/#{repo.full_name}?page=#{n}", expires_in: 1.year) do
           pulls = github_user.pull_requests(repo.full_name, state: 'all', per_page: 100, page: n) rescue []
           pulls.each do |pr|
-            pull = pull_requests.find_or_create_by(pull_id: pr.number, repo: repo.full_name, checked: false, title: pr.title, url: pr.html_url)
+            pull = pull_requests.find_or_create_by(pull_id: pr.number, repo: repo.full_name, checked: false)
+            pull.title = pr.title
+            pull.url = pr.html_url
+            pull.save
             pull.populate_files
           end
           length = pulls.length

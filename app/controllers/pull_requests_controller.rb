@@ -1,5 +1,5 @@
 class PullRequestsController < ApplicationController
   def show
-    @pull_request = system_user.pull_requests.where(checked: false).find(params[:id])
+    @pull_request = system_user.best_pull_request
   end
 end

@@ -21,13 +21,20 @@
       </div>
       <% @pull_request.files.each do |file| %>
         <div class="row">
-            <div class="large-4 columns">
-              <div>
+            <div class="large-12 columns">
+              <div class="callout alert">
                 <%= file.file_path %>
               </div>
-              <div>
-                <%= file.find_similar.map(&:pull_request).map(&:title) %>
-              </div>
+              <% file.find_similar.map(&:pull_request).each do |pull| %>
+                <div class="row">
+                  <div class="large-10 callout warning columns">
+                    <%= pull.title %> <%= pull.repo %> / <%= pull.pull_id %>
+                  </div>
+                  <div class="large-2 columns">
+                    <%= link_to 'link', pull.url, target: '_blank', class: 'button hollow' %>
+                  </div>
+                </div>
+              <% end %>
             </div>
         </div>
       <% end %>
@@ -38,4 +45,3 @@
   Next
   </div>
 </div>
-<%= binding.pry %>
